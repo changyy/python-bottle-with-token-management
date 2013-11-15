@@ -53,10 +53,19 @@ $ wget -qO- "http://localhost:22005/api/password?name=admin&token=9fab7541a28253
 {"status": true}
 ```
 
-支援多個裝置採用的 token 會不一樣(在此依據 client User-agent 與 IP)，但同一裝置登入時可以沿用之前有效的 token
-========
+Token 相關資訊
+==============
+
+依據 client User-agent 與 IP，支援多個裝置使用不一樣的 token ，但同一裝置登入時可以沿用之前有效的 token
 
 ```
+$ sqlite3 token.db ".schema"
+CREATE TABLE Admin ( 
+        id TEXT PRIMARY KEY, 
+        name TEXT UNIQUE NOT NULL, 
+        password TEXT NOT NULL, 
+        profile TEXT DEFAULT '{}'
+);
 $ sqlite3 token.db "SELECT * FROM Admin"
 |admin|aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d|{"token": {"5d3cf7f3a070d914b23fa197b263caa5831b909e": {"pattern": "48a5df88e6b16f7a8f49d3146744f8dae41fadb7", "expired": "2013-11-15T23:46:17.374856"}, "2e52d3eb834e09f30509fcf4837478f207e71f59": {"pattern": "651294308142d18b74de84a732c000e49a0b7442", "expired": "2013-11-15T23:46:02.716752"}, "9fab7541a28253f2e70c2b43caae58e6740781fd": {"pattern": "d82b1d6b570d161d7d7e487b987d91843c11d713", "expired": "2013-11-15T23:55:32.803806"}}}
 
